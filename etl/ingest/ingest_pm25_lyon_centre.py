@@ -7,7 +7,8 @@ def fetch_sensor_data(sensor_id, limit=100):
     if not api_key:
         raise EnvironmentError("Please set the OPENAQ_API_KEY environment variable.")
 
-    url = f"https://api.openaq.org/v3/sensors/{sensor_id}/measurements?limit={limit}"
+    # url = f"https://api.openaq.org/v3/sensors/{sensor_id}/measurements?limit={limit}"
+    url = f"https://api.openaq.org/v3/sensors/{sensor_id}/hours?datetime_from=2025-05-13&datetime_to=2025-05-14"
 
     headers = {
         "x-api-key": api_key
@@ -36,4 +37,4 @@ sensor_id = 8559  # or 12345, etc.
 df = fetch_sensor_data(sensor_id, limit=100)
 
 # Save and download CSV
-df.to_csv("sensor_output.csv", index=False)
+df.to_csv("data/raw/sensor_output.csv", index=False)
