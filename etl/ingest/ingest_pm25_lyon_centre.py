@@ -7,33 +7,46 @@ def fetch_sensor_data(sensor_id, limit=100):
     if not api_key:
         raise EnvironmentError("Please set the OPENAQ_API_KEY environment variable.")
 
-    # url = f"https://api.openaq.org/v3/sensors/{sensor_id}/measurements?limit={limit}"
     url = f"https://api.openaq.org/v3/sensors/{sensor_id}/hours?datetime_from=2025-05-13&datetime_to=2025-05-14"
-
     headers = {
         "x-api-key": api_key
     }
 
-    response = requests.get(url, headers=headers)
-    response.raise_for_status()
+    try:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 401:
+            raise PermissionError("Unauthorized: Check your API key (401).")
+        elif response.status_code == 403:
+            raise PermissionError("Forbidden: You don't have permission to access this resource (403).")
+        elif response.status_code == 422:
+            raise ValueError("Unprocessable Entity: The server could not process your request (422).")
+        elif response.status_code == 502:
+            raise ConnectionError("Bad Gateway: OpenAQ server error (502).")
 
-    data = response.json()
-    if "results" not in data:
-        raise ValueError("No 'results' key in the response.")
+        response.raise_for_status()
 
-    measurements = [
-        {
-            'value': item['value'],
-            'datetime_from_utc': item['period']['datetimeFrom']['utc'],
-            'datetime_to_utc': item['period']['datetimeTo']['utc']
-        }
-        for item in data['results']
-    ]
+        data = response.json()
+        if "results" not in data:
+            raise ValueError("No 'results' key in the response.")
 
-    return pd.DataFrame(measurements)
+        measurements = [
+            {
+                'value': item['value'],
+                'datetime_from_utc': item['period']['datetimeFrom']['utc'],
+                'datetime_to_utc': item['period']['datetimeTo']['utc']
+            }
+            for item in data['results']
+        ]
+
+        return pd.DataFrame(measurements)
+
+    except requests.exceptions.RequestException as e:
+        raise RuntimeError(f"Request failed: {e}")
+
 
 # Usage
-sensor_id = 8559  # or 12345, etc.
+sensor_id = 8559  
+
 df = fetch_sensor_data(sensor_id, limit=100)
 
 # Save and download CSV
