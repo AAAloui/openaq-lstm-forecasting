@@ -10,8 +10,10 @@ def classify_wind_direction(degrees):
 
 
 # Load the files
-aq_df = pd.read_csv("data/raw/sensor_output.csv", parse_dates=["datetime_from_utc"])
-wx_df = pd.read_csv("data/raw/hourly_weather_lyon_centre.csv", parse_dates=["date"])
+aq_df = pd.read_csv("data/raw/sensor_output.csv",\
+                    parse_dates=["datetime_from_utc"])
+wx_df = pd.read_csv("data/raw/hourly_weather_lyon_centre.csv", \
+                    parse_dates=["date"])
 
 # Standardize timestamp for join
 aq_df["timestamp"] = aq_df["datetime_from_utc"].dt.floor("h")
@@ -31,7 +33,8 @@ df["TEMP"] = df["temperature_2m"]
 df["DEWP"] = df["dew_point_2m"]
 df["PRES"] = df["surface_pressure"]
 df["Iws"] = df["wind_speed_10m"]
-df["cbwd"] = df["wind_direction_10m"].apply(lambda deg: classify_wind_direction(deg))
+df["cbwd"] = df["wind_direction_10m"].\
+    apply(lambda deg: classify_wind_direction(deg))
 df["Is"] = df["snowfall"].apply(lambda x: 1 if x > 0 else 0)
 df["Ir"] = df["rain"].apply(lambda x: 1 if x > 0 else 0)
 
