@@ -1,9 +1,10 @@
 import pandas as pd
 
+
 def classify_wind_direction(degrees):
     if pd.isnull(degrees):
         return "N/A"
-    dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+    dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
     ix = int((degrees + 22.5) // 45) % 8
     return dirs[ix]
 
@@ -35,7 +36,23 @@ df["Is"] = df["snowfall"].apply(lambda x: 1 if x > 0 else 0)
 df["Ir"] = df["rain"].apply(lambda x: 1 if x > 0 else 0)
 
 # Select only the required columns
-final = df[["No", "year", "month", "day", "hour", "pm2.5", "DEWP", "TEMP", "PRES", "cbwd", "Iws", "Is", "Ir"]]
+final = df[
+    [
+        "No",
+        "year",
+        "month",
+        "day",
+        "hour",
+        "pm2.5",
+        "DEWP",
+        "TEMP",
+        "PRES",
+        "cbwd",
+        "Iws",
+        "Is",
+        "Ir",
+    ]
+]
 
 # Save final dataset
 final.to_csv("data/processed/full_training_dataset.csv", index=False)

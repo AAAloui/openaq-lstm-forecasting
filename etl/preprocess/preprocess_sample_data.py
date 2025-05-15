@@ -9,9 +9,11 @@ INPUT_PATH = "data/raw/openaq_paris_pm25.csv"
 OUTPUT_PATH = "data/processed/processed_paris_pm25.csv"
 SCALER_PATH = "models/minmax_scaler.pkl"
 
+
 def load_data(filepath):
     print(f"Loading data from {filepath}")
     return pd.read_csv(filepath, parse_dates=["datetime"])
+
 
 def clean_and_prepare(df):
     # Drop rows with missing values
@@ -29,6 +31,7 @@ def clean_and_prepare(df):
 
     return df
 
+
 def scale_data(df):
     scaler = MinMaxScaler(feature_range=(0, 1))
     values = df.values.reshape(-1, 1)  # reshape for scaler
@@ -36,6 +39,7 @@ def scale_data(df):
     df_scaled = pd.DataFrame(scaled, index=df.index, columns=["pm25_scaled"])
 
     return df_scaled, scaler
+
 
 def save_outputs(df, scaler):
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
@@ -46,6 +50,7 @@ def save_outputs(df, scaler):
 
     print(f"Saved processed data to {OUTPUT_PATH}")
     print(f"Saved scaler to {SCALER_PATH}")
+
 
 if __name__ == "__main__":
     df_raw = load_data(INPUT_PATH)

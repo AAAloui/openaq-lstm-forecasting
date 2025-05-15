@@ -5,12 +5,14 @@ from etl.ingest.fetch_openaq_sample import fetch_openaq_data
 
 from etl.ingest.ingest_pm25_lyon_centre import fetch_sensor_data
 
+
 def test_missing_api_key():
     """Should raise EnvironmentError if API key is not set"""
     if "OPENAQ_API_KEY" in os.environ:
         del os.environ["OPENAQ_API_KEY"]
     with pytest.raises(EnvironmentError):
         fetch_sensor_data(sensor_id=8559)
+
 
 def test_invalid_api_key():
     """Should raise PermissionError if API key is invalid"""
@@ -30,6 +32,7 @@ def test_unauthorized_api_key(mock_get):
     with pytest.raises(PermissionError, match="Unauthorized"):
         fetch_sensor_data(sensor_id=12345)
 
+
 @patch("etl.ingest.fetch_openaq_sample.requests.get")
 def test_unprocessable_entity(mock_get):
     """Should raise ValueError when API returns 422 Unprocessable Entity"""
@@ -39,6 +42,7 @@ def test_unprocessable_entity(mock_get):
     mock_get.return_value = mock_response
     with pytest.raises(ValueError, match="Unprocessable"):
         fetch_sensor_data(sensor_id=999999)
+
 
 @patch("etl.ingest.fetch_openaq_sample.requests.get")
 def test_bad_gateway_error(mock_get):
@@ -50,6 +54,7 @@ def test_bad_gateway_error(mock_get):
     with pytest.raises(ConnectionError, match="Bad Gateway"):
         fetch_sensor_data(sensor_id=8559)
 
+
 @patch("etl.ingest.fetch_openaq_sample.requests.get")
 def test_network_error(mock_get):
     """Should raise RuntimeError on network error"""
@@ -58,6 +63,7 @@ def test_network_error(mock_get):
 
     with pytest.raises(RuntimeError, match="Request failed"):
         fetch_sensor_data(sensor_id=8559)
+
 
 @patch("etl.ingest.fetch_openaq_sample.requests.get")
 def test_empty_results_list(mock_get):
@@ -71,6 +77,7 @@ def test_empty_results_list(mock_get):
     df = fetch_sensor_data(sensor_id=8559)
     assert df.empty
 
+
 @patch("etl.ingest.fetch_openaq_sample.requests.get")
 def test_successful_fetch(mock_get):
     """Should return a DataFrame with sensor data"""
@@ -83,8 +90,8 @@ def test_successful_fetch(mock_get):
                 "value": 18.0,
                 "period": {
                     "datetimeFrom": {"utc": "2025-05-13T00:00:00Z"},
-                    "datetimeTo": {"utc": "2025-05-13T01:00:00Z"}
-                }
+                    "datetimeTo": {"utc": "2025-05-13T01:00:00Z"},
+                },
             }
         ]
     }
