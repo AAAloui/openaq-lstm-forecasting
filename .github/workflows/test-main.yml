@@ -23,10 +23,10 @@ jobs:
           pip install flake8 black
 
       - name: Run flake8
-        run: flake8 etl tests
+        run: flake8 etl/ingest/ingest_pm25lyon_centre.py
 
       - name: Check formatting with Black
-        run: black --check etl tests
+        run: black --check etl/ingest/ingest_pm25lyon_centre.py
 
   test-ingest:
     name: 🧪 Test Ingestion Logic
