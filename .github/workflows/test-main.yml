@@ -23,7 +23,7 @@ jobs:
           pip install flake8 black
 
       - name: Run flake8
-        run: flake8  etl/ingest 
+        run: flake8  etl tests 
 
       # - name: Check formatting with Black
       #   run: black --check etl tests
