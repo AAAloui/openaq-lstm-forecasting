@@ -28,8 +28,8 @@ jobs:
       # - name: Check formatting with Black
       #   run: black --check etl tests
 
-  test-ingest:
-    name: 🧪 Test Ingestion Logic
+  unit-tests:
+    name: 🧪 Run unit tests
     runs-on: ubuntu-latest
     needs: lint
     env:
@@ -50,22 +50,6 @@ jobs:
       - name: Run ingestion tests
         run: pytest tests/test_ingest.py
 
-  test-preprocess:
-    name: 🧪 Test Preprocessing Logic
-    runs-on: ubuntu-latest
-    needs: lint
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.13.3
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install pytest
-
       - name: Run preprocessing tests
         run: pytest tests/test_preprocess.py
+
