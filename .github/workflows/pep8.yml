@@ -1,8 +1,6 @@
 name: ✅ Code Quality & Tests
 
-on:
-  push:
-    branches: [**]
+on: push
 
 jobs:
   lint:
