@@ -1,4 +1,4 @@
-import os 
+import os
 import pytest
 import requests
 from unittest.mock import patch, MagicMock
@@ -26,7 +26,8 @@ def test_unauthorized_api_key(mock_get):
     os.environ["OPENAQ_API_KEY"] = "valid-but-unused-key"
     mock_response = MagicMock()
     mock_response.status_code = 401
-    mock_response.raise_for_status.side_effect = None  # prevent automatic HTTPError
+    mock_response.raise_for_status.side_effect = None
+    # prevent automatic HTTPError
     mock_get.return_value = mock_response
     with pytest.raises(PermissionError, match="Unauthorized"):
         fetch_sensor_data(sensor_id=12345)
