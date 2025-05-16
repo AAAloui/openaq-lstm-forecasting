@@ -6,7 +6,8 @@ import pandas as pd
 def fetch_sensor_data(sensor_id, limit=100):
     api_key = os.getenv("OPENAQ_API_KEY")
     if not api_key:
-        raise EnvironmentError("Please set the OPENAQ_API_KEY environment variable.")
+        raise EnvironmentError("Please set the OPENAQ_API_KEY"
+                               "environment variable.")
 
     url = (
         f"https://api.openaq.org/v3/sensors/{sensor_id}/hours"

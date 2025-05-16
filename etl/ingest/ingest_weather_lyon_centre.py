@@ -10,7 +10,7 @@ retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
 openmeteo = openmeteo_requests.Client(session=retry_session)
 
 # Make sure all required weather variables are listed here
-# The order of variables in hourly or daily is important to 
+# The order of variables in hourly or daily is important to
 # assign them correctly below
 url = "https://api.open-meteo.com/v1/forecast"
 params = {
@@ -30,10 +30,16 @@ params = {
 responses = openmeteo.weather_api(url, params=params)
 
 response = responses[0]
-print(f"Coordinates {response.Latitude()}°N {response.Longitude()}°E")
+print(f"Coordinates {response.Latitude()}°N {response.
+      Longitude()}°E"
+      )
 print(f"Elevation {response.Elevation()} m asl")
-print(f"Timezone {response.Timezone()}{response.TimezoneAbbreviation()}")
-print(f"Timezone difference to GMT+0 {response.UtcOffsetSeconds()} s")
+print(f"Timezone {response.Timezone()}{response.
+      TimezoneAbbreviation()}"
+      )
+print(f"Timezone difference to GMT+0 {response.
+      UtcOffsetSeconds()} s"
+      )
 
 hourly = response.Hourly()
 hourly_temperature_2m = hourly.Variables(0).ValuesAsNumpy()
@@ -64,4 +70,5 @@ hourly_data["snowfall"] = hourly_snowfall
 hourly_dataframe = pd.DataFrame(data=hourly_data)
 # print(hourly_dataframe)
 
-hourly_dataframe.to_csv("data/raw/hourly_weather_lyon_centre.csv", index=False)
+hourly_dataframe.to_csv("data/raw/hourly_weather_lyon_centre.csv",
+                        index=False)
