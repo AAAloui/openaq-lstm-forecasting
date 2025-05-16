@@ -1,8 +1,7 @@
-import os, pytest, requests
-import pandas as pd
+import os 
+import pytest
+import requests
 from unittest.mock import patch, MagicMock
-from etl.ingest.fetch_openaq_sample import fetch_openaq_data
-
 from etl.ingest.ingest_pm25_lyon_centre import fetch_sensor_data
 
 
