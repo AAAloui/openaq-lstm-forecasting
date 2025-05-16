@@ -48,7 +48,7 @@ jobs:
           pip install pytest
 
       - name: Run ingestion tests
-        run: pytest tests/test_fetch_sensor_data.py
+        run: pytest tests/test_ingest.py
 
   test-preprocess:
     name: 🧪 Test Preprocessing Logic
